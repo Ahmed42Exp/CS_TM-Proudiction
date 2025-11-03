@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Elektrik Zeka Mini Ultra — AE MAB1 Üst Sürüm ⚡</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2300e5ff' d='M13 2 L7 12h5l-3 10 10-12h-5l3-10z'/%3E%3C/svg%3E" />
+<style>
+:root{
+  --bg-0:#040507; --bg-1:#071217; --card:#071519; --muted:#98b0b6; --accent:#00e5ff; --accent-2:#7cffb2; --glass: rgba(255,255,255,0.03);
+  --radius:14px; --gap:12px; --input-h:56px; --shadow:0 10px 30px rgba(0,0,0,0.6);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:var(--muted);background:linear-gradient(180deg,var(--bg-0),#071217)}
+.app{max-width:920px;margin:0 auto;height:100vh;display:flex;flex-direction:column}
+.header{height:72px;display:flex;align-items:center;padding:12px 18px;gap:14px;position:sticky;top:0;background:linear-gradient(180deg,transparent,rgba(255,255,255,0.02));backdrop-filter:blur(4px);z-index:60}
+.logo{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#00ffd0,#00a3ff);display:grid;place-items:center;box-shadow:0 8px 30px rgba(0,230,255,0.06)}
+.h-title{font-weight:800;color:var(--accent);font-size:18px}
+.h-sub{font-size:12px;color:#7adbd8;margin-left:6px}
+.header-right{margin-left:auto;display:flex;gap:10px;align-items:center}
+.icon-btn{background:transparent;border:0;color:var(--muted);padding:8px;border-radius:10px;cursor:pointer;font-size:18px}
+.icon-btn:active{transform:scale(0.98)}
+.card{margin:12px;padding:14px;border-radius:16px;background:linear-gradient(180deg,#071217,#061316);box-shadow:var(--shadow);border:1px solid rgba(0,230,255,0.03)}
+.container{flex:1;display:flex;gap:12px;padding:12px}
+.left{flex:1;display:flex;flex-direction:column;gap:12px}
+.chat{flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:80%;padding:12px 14px;border-radius:14px;font-size:15px;line-height:1.4;word-wrap:break-word;box-shadow:0 8px 20px rgba(0,0,0,0.6);opacity:0;transform:translateY(8px);animation:pop .25s forwards}
+.msg.ai{align-self:flex-start;background:linear-gradient(180deg,#042528,#002f33);color:#cffff8;border:1px solid rgba(0,255,204,0.06)}
+.msg.user{align-self:flex-end;background:linear-gradient(180deg,#05262f,#06414b);color:#fff1b6;border:1px solid rgba(255,200,110,0.06)}
+.ts{display:block;font-size:11px;color:#6e8b8f;margin-top:8px}
+@keyframes pop{to{opacity:1;transform:none}}
+.right{width:320px;display:flex;flex-direction:column;gap:12px}
+.panel{border-radius:12px;padding:12px;background:linear-gradient(180deg,#071217,#041317);border:1px solid rgba(255,255,255,0.02)}
+.small{font-size:13px;color:var(--muted)}
+.input-wrap{display:flex;gap:10px;align-items:center}
+.input{flex:1;display:flex;align-items:center;gap:8px;background:#08131a;border-radius:12px;padding:8px;border:1px solid rgba(255,255,255,0.02)}
+.input input{flex:1;border:0;background:transparent;color:var(--muted);font-size:16px;outline:none;padding:8px}
+.send{background:linear-gradient(90deg,var(--accent),#6ee7ff);border:0;color:#021019;padding:12px 14px;border-radius:12px;font-weight:700;cursor:pointer}
+.send:active{transform:scale(0.98)}
+.controls{display:flex;gap:8px;align-items:center}
+.switch{display:inline-flex;align-items:center;gap:8px}
+.toggle{width:44px;height:24px;border-radius:999px;background:#122;position:relative;cursor:pointer}
+.knob{width:20px;height:20px;border-radius:50%;background:linear-gradient(180deg,#fff,#dfe);position:absolute;top:2px;left:2px;transition:all .18s}
+.toggle.on{background:linear-gradient(90deg,#004851,#006a5b)}
+.toggle.on .knob{left:22px}
+.footer-note{font-size:12px;color:#89aeb3;text-align:center;margin-top:6px}
+.signature{font-size:12px;color:#7adbd8;margin-top:10px;text-align:center}
+.cpu-meter{height:8px;background:linear-gradient(90deg,#022,#004);border-radius:6px;overflow:hidden}
+.cpu-fill{height:100%;width:30%;border-radius:6px;background:linear-gradient(90deg,#00e5ff,#7cffb2);transition:width .6s ease}
+.badge{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.02);font-size:12px}
+.settings-row{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.select,input[type="text"]{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--muted);font-size:14px}
+.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:92%;max-width:520px;background:#061116;border-radius:12px;padding:12px;border:1px solid rgba(0,230,255,0.06);z-index:160;display:none;box-shadow:0 30px 80px rgba(0,0,0,0.6)}
+.modal.open{display:block}
+@media (max-width:920px){.container{flex-direction:column}.right{width:100%}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header card">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="logo" aria-hidden="true"><svg viewBox="0 0 64 64" width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="lg2" x1="0" x2="1"><stop offset="0" stop-color="#fff88a"/><stop offset="1" stop-color="#00ffd0"/></linearGradient></defs><path d="M28 4 L12 36 H28 L20 60 L46 24 H32 L40 4 Z" fill="url(#lg2)"></path></svg></div>
+      <div>
+        <div class="h-title">Elektrik Zeka Mini Ultra <span class="h-sub">AE MAB1 Üst Sürüm</span></div>
+        <div style="font-size:12px;color:var(--muted)">Hızlı • Hafif • Gizlilik-odaklı (test modunda)</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="badge">vAE-MAB1</div>
+      <button class="icon-btn" id="btn-settings" title="Ayarlar">⚙️</button>
+      <button class="icon-btn" id="btn-new" title="Yeni sohbet">⟳</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="left">
+      <div class="card chat" id="chat" role="log" aria-live="polite"></div>
+      <div style="display:flex;align-items:center;gap:8px" class="card">
+        <div class="input-wrap" style="width:100%">
+          <div class="input" role="search">
+            <button id="micBtn" class="icon-btn" title="Sesle yaz">🎤</button>
+            <input id="msg" type="text" inputmode="text" autocomplete="off" placeholder="Merhaba — bir şey yaz..." aria-label="Mesaj girin" />
+          </div>
+          <button id="sendBtn" class="send">Gönder</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;justify-content:center">
+        <div class="small">Otomatik tema: <strong id="autoThemeLabel">Koyu</strong></div>
+        <div class="small">|</div>
+        <div class="small">Sürüm: <strong>AE MAB1 Üst Sürüm</strong></div>
+      </div>
+      <div class="signature">ABB ve MAB tarafından CS™ Production (BT Grubu) adı altında Bakırtaş Yazılım'la yapılmıştır.</div>
+    </div>
+
+    <div class="right">
+      <div class="panel card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:700;color:var(--accent)">Sistem</div>
+          <div class="small">Durum: <span id="sysStatus">Hazır</span></div>
+        </div>
+        <div style="margin-top:10px" class="small">CPU Sim. <span id="cpuPerc" style="float:right">30%</span></div>
+        <div class="cpu-meter" style="margin-top:8px"><div id="cpuFill" class="cpu-fill"></div></div>
+        <div style="display:flex;gap:8px;margin-top:10px;align-items:center">
+          <div class="small">Yerel Zeka v2</div>
+          <div style="flex:1"></div>
+          <div class="badge">Offline</div>
+        </div>
+      </div>
+
+      <div class="panel card">
+        <div style="font-weight:700;color:var(--accent)">Ayarlar</div>
+        <div class="settings-row" style="margin-top:8px">
+          <div class="small">Motor</div>
+          <select id="engine" class="select" aria-label="Motor seç">
+            <option value="local">Yerel (Yerel Zeka v2)</option>
+            <option value="openai">OpenAI (ChatGPT)</option>
+            <option value="hf">HuggingFace</option>
+          </select>
+          <div id="openaiPanel" style="display:none">
+            <div class="small">OpenAI API Key</div>
+            <input id="openaiKey" type="text" placeholder="sk-..." />
+            <div class="small">Model</div>
+            <input id="openaiModel" type="text" value="gpt-3.5-turbo" />
+          </div>
+          <div id="hfPanel" style="display:none">
+            <div class="small">HuggingFace API Key (isteğe bağlı)</div>
+            <input id="hfKey" type="text" placeholder="hf_..." />
+            <div class="small">Model</div>
+            <select id="hfModel" class="select"><option>tiiuae/mistral-small</option><option>mistralai/Mistral-7B-Instruct</option><option>mistralai/Mixtral-8x7B-Instruct</option><option>bigscience/bloomz-7b1</option></select>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button id="saveBtn" class="icon-btn" style="background:linear-gradient(90deg,var(--accent),#6ee7ff);border-radius:8px;padding:8px 10px;color:#021019">Ayarları Kaydet</button>
+            <button id="clearHistory" class="icon-btn">Geçmişi Sil</button>
+            <button id="exportBtn" class="icon-btn">Dışa Aktar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel card">
+        <div style="font-weight:700;color:var(--accent)">Bilgi</div>
+        <div style="margin-top:8px" class="small">Bu bir geliştirilmiş demo sürümüdür. Üretimde API anahtarları sunucu tarafında saklanmalıdır.</div>
+        <div style="margin-top:10px" class="small">Kısayollar: <br>Enter = Gönder • 🎤 = Sesle yaz</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal -->
+<div class="modal" id="modal">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <strong style="color:var(--accent)">Ayarlar</strong>
+    <button id="closeModal" class="icon-btn">✕</button>
+  </div>
+  <div class="settings-row">
+    <div class="small">Tema</div>
+    <div style="display:flex;gap:8px"><button id="themeAuto" class="icon-btn">Otomatik</button><button id="themeDark" class="icon-btn">Koyu</button><button id="themeLight" class="icon-btn">Açık</button></div>
+  </div>
+  <div class="settings-row">
+    <div class="small">Sürüm</div>
+    <input id="versionField" type="text" value="AE MAB1 Üst Sürüm" />
+  </div>
+  <div style="display:flex;gap:8px;margin-top:8px">
+    <button id="modalSave" class="icon-btn" style="background:linear-gradient(90deg,var(--accent),#6ee7ff);border-radius:8px;padding:8px 10px;color:#021019">Kaydet</button>
+    <button id="modalCancel" class="icon-btn">İptal</button>
+  </div>
+</div>
+
+<script>
+// Geliştirilmiş JS: otomatik tema, gelişmiş yerel zeka, CPU sim, PWA manifest oluşturma
+(function(){
+  const chat = document.getElementById('chat');
+  const msgInput = document.getElementById('msg');
+  const sendBtn = document.getElementById('sendBtn');
+  const micBtn = document.getElementById('micBtn');
+  const modal = document.getElementById('modal');
+  const btnSettings = document.getElementById('btn-settings');
+  const closeModal = document.getElementById('closeModal');
+  const engineSel = document.getElementById('engine');
+  const openaiPanel = document.getElementById('openaiPanel');
+  const hfPanel = document.getElementById('hfPanel');
+  const openaiKey = document.getElementById('openaiKey');
+  const openaiModel = document.getElementById('openaiModel');
+  const hfKey = document.getElementById('hfKey');
+  const hfModel = document.getElementById('hfModel');
+  const saveBtn = document.getElementById('saveBtn');
+  const clearHistoryBtn = document.getElementById('clearHistory');
+  const btnNew = document.getElementById('btn-new');
+  const cpuFill = document.getElementById('cpuFill');
+  const cpuPerc = document.getElementById('cpuPerc');
+  const sysStatus = document.getElementById('sysStatus');
+  const autoThemeLabel = document.getElementById('autoThemeLabel');
+  const exportBtn = document.getElementById('exportBtn');
+  const versionField = document.getElementById('versionField');
+
+  // config
+  let cfg = {
+    engine: localStorage.getItem('ez_engine') || 'local',
+    openaiKey: localStorage.getItem('ez_openai_key') || '',
+    openaiModel: localStorage.getItem('ez_openai_model') || 'gpt-3.5-turbo',
+    hfKey: localStorage.getItem('ez_hf_key') || '',
+    hfModel: localStorage.getItem('ez_hf_model') || 'tiiuae/mistral-small',
+    theme: localStorage.getItem('ez_theme') || 'auto',
+    version: localStorage.getItem('ez_version') || 'AE MAB1 Üst Sürüm'
+  };
+
+  function updatePanels(){ openaiPanel.style.display = engineSel.value==='openai' ? 'block' : 'none'; hfPanel.style.display = engineSel.value==='hf' ? 'block' : 'none'; }
+  engineSel.addEventListener('change', updatePanels);
+
+  function saveCfg(){
+    cfg.engine = engineSel.value;
+    cfg.openaiKey = openaiKey.value.trim();
+    cfg.openaiModel = openaiModel.value.trim() || 'gpt-3.5-turbo';
+    cfg.hfKey = hfKey.value.trim();
+    cfg.hfModel = hfModel.value;
+    cfg.version = versionField.value || cfg.version;
+    localStorage.setItem('ez_engine', cfg.engine);
+    localStorage.setItem('ez_openai_key', cfg.openaiKey);
+    localStorage.setItem('ez_openai_model', cfg.openaiModel);
+    localStorage.setItem('ez_hf_key', cfg.hfKey);
+    localStorage.setItem('ez_hf_model', cfg.hfModel);
+    localStorage.setItem('ez_version', cfg.version);
+    alert('Ayarlar kaydedildi.');
+    modal.classList.remove('open');
+  }
+  saveBtn.addEventListener('click', saveCfg);
+
+  btnSettings.addEventListener('click', ()=>{ modal.classList.add('open'); engineSel.value = cfg.engine; openaiKey.value = cfg.openaiKey; openaiModel.value = cfg.openaiModel; hfKey.value = cfg.hfKey; hfModel.value = cfg.hfModel; versionField.value = cfg.version; updatePanels(); });
+  closeModal.addEventListener('click', ()=> modal.classList.remove('open'));
+
+  function saveHistory(){
+    const items = Array.from(chat.querySelectorAll('.msg')).map(el=>({who:el.dataset.who,text:el.querySelector('.body').innerText,time:el.querySelector('.ts').innerText}));
+    localStorage.setItem('ez_hist', JSON.stringify(items));
+  }
+  function loadHistory(){
+    const raw = localStorage.getItem('ez_hist');
+    if(!raw) return;
+    try{ const items = JSON.parse(raw); items.forEach(it=> appendMsg(it.who,it.text,it.time,false)); }catch(e){ console.warn(e) }
+  }
+  function clearHistory(){ localStorage.removeItem('ez_hist'); chat.innerHTML=''; }
+
+  function appendMsg(who, text, when, persist=true){
+    const d = document.createElement('div');
+    d.className = 'msg ' + (who==='user'?'user':'ai');
+    d.dataset.who = who;
+    const inner = document.createElement('div');
+    inner.className='body';
+    inner.innerText = text;
+    const ts = document.createElement('div');
+    ts.className='ts';
+    ts.innerText = when || new Date().toLocaleTimeString();
+    d.appendChild(inner); d.appendChild(ts);
+    chat.appendChild(d);
+    chat.scrollTop = chat.scrollHeight;
+    if(persist) saveHistory();
+  }
+
+  // Yerel Zeka v2 - biraz daha zengin cevap seti
+  function localEngineV2(prompt){
+    const t = prompt.toLowerCase().trim();
+    if(!t) return "Bir şey yazmalısın 😊";
+    const greetings = ['merhaba','selam','sa','iyi günler','günaydın','iyi akşamlar'];
+    if(greetings.some(g=> t.includes(g))) return 'Merhaba! AE MAB1 Üst Sürüm burada — nasıl yardımcı olabilirim?';
+    if(t.includes('nasılsın')) return 'İyiyim, teşekkürler! Sen nasılsın?';
+    if(t.includes('adın ne')) return 'Ben Elektrik Zeka Mini Ultra — ama dostlarım bana EZ diyor.';
+    if(t.includes('temizle')){ clearHistory(); return 'Sohbet temizlendi.'; }
+    // basit hesaplama (güvenli)
+    const mathMatch = t.match(/^([0-9\.]+)\s*([+\-*/])\s*([0-9\.]+)$/);
+    if(mathMatch){ try{ const a=parseFloat(mathMatch[1]); const op=mathMatch[2]; const b=parseFloat(mathMatch[3]); let r=0; if(op==='+') r=a+b; if(op==='-') r=a-b; if(op==='*') r=a*b; if(op==='/') r=(b===0? '∞': a/b); return 'Hesap: ' + r; }catch(e){} }
+    const fall = ['Anladım. Biraz daha anlatır mısın?','Bunu biraz daha açabilir misin?','Güzel — devam et lütfen.'];
+    return fall[Math.floor(Math.random()*fall.length)];
+  }
+
+  // OpenAI ve HF çağrıları (aynı şekilde ama hata mesajları iyileştirildi)
+  async function callOpenAI(prompt){
+    const key = cfg.openaiKey;
+    if(!key) throw new Error('OpenAI API anahtarı ayarlı değil.');
+    const model = cfg.openaiModel || 'gpt-3.5-turbo';
+    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+      method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + key },
+      body: JSON.stringify({ model, messages:[{role:'user',content:prompt}], max_tokens:512, temperature:0.6 })
+    });
+    if(!res.ok){ const t = await res.text(); throw new Error('OpenAI hata: ' + res.status + ' ' + t); }
+    const data = await res.json();
+    return data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content ? data.choices[0].message.content.trim() : 'OpenAI: cevap alınamadı.';
+  }
+  async function callHF(prompt){
+    const model = cfg.hfModel || 'tiiuae/mistral-small';
+    const url = 'https://api-inference.huggingface.co/models/' + encodeURIComponent(model);
+    const headers = { 'Content-Type':'application/json' };
+    if(cfg.hfKey) headers['Authorization'] = 'Bearer ' + cfg.hfKey;
+    const res = await fetch(url, { method:'POST', headers, body: JSON.stringify({ inputs: prompt, options:{ wait_for_model:true } }) });
+    if(!res.ok){ const t = await res.text(); throw new Error('HF hata: ' + res.status + ' ' + t); }
+    const data = await res.json();
+    if(Array.isArray(data) && data[0] && data[0].generated_text) return data[0].generated_text.trim();
+    if(data.generated_text) return data.generated_text.trim();
+    if(typeof data === 'string') return data;
+    if(Array.isArray(data) && data[0] && data[0].error) throw new Error(data[0].error);
+    return JSON.stringify(data).slice(0,1000);
+  }
+
+  async function send(){
+    const text = msgInput.value.trim(); if(!text) return; appendMsg('user', text); msgInput.value='';
+    try{
+      if(cfg.engine==='local'){
+        await delay(250 + Math.random()*400);
+        const r = localEngineV2(text);
+        appendMsg('ai', r);
+      } else if(cfg.engine==='openai'){
+        appendMsg('ai','Düşünüyor...');
+        const r = await callOpenAI(text);
+        const last = chat.querySelector('.msg.ai:last-child');
+        if(last && last.querySelector('.body').innerText==='Düşünüyor...'){ last.querySelector('.body').innerText = r; last.querySelector('.ts').innerText = new Date().toLocaleTimeString(); saveHistory(); }
+        else appendMsg('ai', r);
+      } else if(cfg.engine==='hf'){
+        appendMsg('ai','Düşünüyor...');
+        const r = await callHF(text);
+        const last = chat.querySelector('.msg.ai:last-child');
+        if(last && last.querySelector('.body').innerText==='Düşünüyor...'){ last.querySelector('.body').innerText = r; last.querySelector('.ts').innerText = new Date().toLocaleTimeString(); saveHistory(); }
+        else appendMsg('ai', r);
+      }
+    }catch(err){ appendMsg('ai', 'Hata: ' + (err.message || err)); }
+  }
+  function delay(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+  sendBtn.addEventListener('click', send);
+  msgInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter') send(); });
+
+  btnNew.addEventListener('click', ()=>{ if(confirm('Yeni sohbet başlatılsın mı? Geçmiş silinecek.')){ clearHistory(); } });
+  clearHistoryBtn.addEventListener('click', ()=>{ if(confirm('Geçmişi silmek istiyor musun?')) clearHistory(); });
+  exportBtn.addEventListener('click', ()=>{ const data = localStorage.getItem('ez_hist')||'[]'; const blob = new Blob([data],{type:'application/json'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='ez_history.json'; a.click(); URL.revokeObjectURL(url); });
+
+  // speech recognition (optional)
+  let recognition = null;
+  try{ const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if(SR){ recognition = new SR(); recognition.lang = 'tr-TR'; recognition.interimResults = false; recognition.maxAlternatives = 1; recognition.onresult = e=>{ msgInput.value = e.results[0][0].transcript; send(); }; }}catch(e){ recognition = null; }
+  micBtn.addEventListener('click', ()=>{ if(!recognition){ alert('Tarayıcınız sesle yazmayı desteklemiyor veya izin verilmedi.'); return; } try{ recognition.start(); }catch(e){} });
+
+  function onResize(){ const vh = window.innerHeight; if(vh < (screen.height * 0.75)) document.body.classList.add('keyboard-open'); else document.body.classList.remove('keyboard-open'); chat.scrollTop = chat.scrollHeight; }
+  window.addEventListener('resize', onResize); window.addEventListener('orientationchange', onResize);
+
+  // CPU sim
+  function updateCpu(){ const val = Math.floor(10 + Math.abs(Math.sin(Date.now()/3000))*80); cpuFill.style.width = val + '%'; cpuPerc.innerText = val + '%'; }
+  setInterval(updateCpu, 1000);
+  updateCpu();
+
+  // theme handling
+  function applyTheme(t){ if(t==='dark'){ document.documentElement.style.setProperty('--bg-0','#030405'); document.documentElement.style.setProperty('--bg-1','#061116'); autoThemeLabel.innerText='Koyu'; }
+    else if(t==='light'){ document.documentElement.style.setProperty('--bg-0','#f7fbfc'); document.documentElement.style.setProperty('--bg-1','#eef6f7'); document.documentElement.style.setProperty('--card','#fff'); autoThemeLabel.innerText='Açık'; }
+    else { // auto based on hour
+      const h = new Date().getHours(); if(h>=8 && h<18) applyTheme('light'); else applyTheme('dark'); autoThemeLabel.innerText = (h>=8 && h<18)?'Otomatik (Açık)':'Otomatik (Koyu)'; }
+  }
+  // theme buttons
+  document.getElementById('themeAuto').addEventListener('click', ()=>{ cfg.theme='auto'; localStorage.setItem('ez_theme','auto'); applyTheme('auto'); });
+  document.getElementById('themeDark').addEventListener('click', ()=>{ cfg.theme='dark'; localStorage.setItem('ez_theme','dark'); applyTheme('dark'); });
+  document.getElementById('themeLight').addEventListener('click', ()=>{ cfg.theme='light'; localStorage.setItem('ez_theme','light'); applyTheme('light'); });
+
+  // load
+  function init(){ const savedEngine = localStorage.getItem('ez_engine'); if(savedEngine) cfg.engine = savedEngine; cfg.openaiKey = localStorage.getItem('ez_openai_key') || cfg.openaiKey; cfg.openaiModel = localStorage.getItem('ez_openai_model') || cfg.openaiModel; cfg.hfKey = localStorage.getItem('ez_hf_key') || cfg.hfKey; cfg.hfModel = localStorage.getItem('ez_hf_model') || cfg.hfModel; cfg.theme = localStorage.getItem('ez_theme') || cfg.theme; cfg.version = localStorage.getItem('ez_version') || cfg.version;
+    engineSel.value = cfg.engine; openaiKey.value = cfg.openaiKey; openaiModel.value = cfg.openaiModel; hfKey.value = cfg.hfKey; hfModel.value = cfg.hfModel; versionField.value = cfg.version; updatePanels(); loadHistory(); if(chat.children.length===0) appendMsg('ai','Merhaba — Elektrik Zeka Mini Ultra AE MAB1 Üst Sürüm hazır. Ayarlar → Motor ile OpenAI veya HuggingFace seçebilirsiniz.'); applyTheme(cfg.theme);
+  }
+  init();
+
+  // autosave
+  setInterval(saveHistory, 2000);
+
+  // expose small API for debugging
+  window.ez = { appendMsg, send, cfg, clearHistory };
+
+  // create lightweight manifest for PWA add-to-home
+  try{
+    const manifest = { name:'Elektrik Zeka Mini Ultra', short_name:'EZ Mini', start_url:'.', display:'standalone', background_color:'#071217', theme_color:'#00e5ff', icons:[{src:'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\'%3E%3Cpath fill=\'%2300e5ff\' d=\'M13 2 L7 12h5l-3 10 10-12h-5l3-10z\'/%3E%3C/svg%3E', sizes:'192x192', type:'image/svg+xml'}] };
+    const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const l = document.createElement('link'); l.rel='manifest'; l.href=url; document.head.appendChild(l);
+  }catch(e){console.warn(e)}
+
+})();
+</script>
+</body>
+</html>
